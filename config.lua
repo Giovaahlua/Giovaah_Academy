@@ -36,17 +36,17 @@ Config.TastoDespawnMoto                         = 'F'                           
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Start Ammo System
 
-Config.AliasComandoMunizioni                    = 'munizioni'
+Config.AliasComandoMunizioni                    = 'munizioni'                   -- Alias of Command Ammo
 
 Config.TipoNotificaRicaricaArmi                 = 'success'                     -- (success, error, info)
 Config.TitoloRicaricaArmi                       = 'Successo'                    -- Title | REMEMBER: Only okokNotify
 Config.MessaggioRicaricaArmi                    = 'Hai Ricaricato l\'Arma!'     -- You have Despawned the Bike!
 
-Config.ArmiAmmesse =  {
+Config.ArmiAmmesse =  {                                                         -- Weapon Allowed
 
-    Armi = {
-        'weapon_pistol',
-        'weapon_pistol50'
-    }
+    Armi = {                                                                    -- Weapon Allowed
+        'weapon_pistol',                                                        -- Weapon Allowed
+        'weapon_pistol50'                                                       -- Weapon Allowed
+    }                                                                           -- Weapon Allowed
 
-}
+}                                                                               -- Weapon Allowed
