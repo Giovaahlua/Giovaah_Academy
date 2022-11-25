@@ -13,7 +13,7 @@ Config = {} -- DON'T TOUCH THIS!!
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Config.Notifica                                 = 'OKOK'                        -- Notify System | 'OKOK' (okokNotify), 'QB' (QB-Core Default Notification System)
+Config.Notifica                                 = 'QB'                        -- Notify System | 'OKOK' (okokNotify), 'QB' (QB-Core Default Notification System)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Start Moto System
@@ -34,3 +34,19 @@ Config.TastoDespawnMoto                         = 'F'                           
 
 -- End Bike System
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Start Ammo System
+
+Config.AliasComandoMunizioni                    = 'munizioni'
+
+Config.TipoNotificaRicaricaArmi                 = 'success'                     -- (success, error, info)
+Config.TitoloRicaricaArmi                       = 'Successo'                    -- Title | REMEMBER: Only okokNotify
+Config.MessaggioRicaricaArmi                    = 'Hai Ricaricato l\'Arma!'     -- You have Despawned the Bike!
+
+Config.ArmiAmmesse =  {
+
+    Armi = {
+        'weapon_pistol',
+        'weapon_pistol50'
+    }
+
+}
