@@ -4,7 +4,7 @@
 --      Per qualsiasi Problema scrivimi su Discord.      --                              
 --                                                       -- 
 --      Nome dello Script: Giovaah_Academy               --  
---      Versione dello Script: 1.2                       -- 
+--      Versione dello Script: 1.5                       -- 
 -----------------------------------------------------------
 --           https://dsc.gg/giovaahdevelopment           -- 
 -----------------------------------------------------------
