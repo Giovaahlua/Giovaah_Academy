@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local webhook = 'https://discord.com/api/webhooks/1045769692666667029/IUtmCLz2o0olv7bgz3H0YYVynz81_eRGnfz4Nz4oSB21_bWi1WJN3w7_MLV8eTNu-MJ4'
 
 RegisterCommand(Config.AliasComandoSpawnMoto, function(source)
     TriggerClientEvent('QBCore:Command:SpawnVehicle', source, 'bf400')
