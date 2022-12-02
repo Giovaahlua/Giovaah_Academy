@@ -13,7 +13,7 @@ Config = {} -- DON'T TOUCH THIS!!
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Config.Notifica                                 = 'READ HERE'                          -- Notify System | 'OKOK' (okokNotify), 'QB' (QB-Core Default Notification System)
+Config.Notifica                                 = 'QB'                          -- Notify System | 'OKOK' (okokNotify), 'QB' (QB-Core Default Notification System)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Start Moto System
@@ -54,7 +54,7 @@ Config.ArmiAmmesse =  {                                                         
 
     Armi = {
         'weapon_pistol',
-        'weapon_pistol50'
+        'weapon_pistol50',
     }       
 
 }           
@@ -66,4 +66,36 @@ Config.ArmiAmmesse =  {                                                         
 Config.DisattivaNPC                             = 'true'                        -- Remove all NPCs (will increase by 0.02ms to a maximum of 0.05ms Resmon)    
 
 -- End NPC System
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Start SafeZone System
+
+Config.AttivaSafeZone                           = 'true'                        -- Active the SafeZone (will increase by 0.01ms to a maximum of 0.03ms Resmon)
+Config.AttivaBlipSafeZone                       = 'true'                        -- Active the Blip of SafeZone
+
+Config.NomeBlipSafeZone                         = 'SAFEZONE'                     -- Name of the Blip of SafeZone
+
+Config.GrandezzaSafeZone                        = 50.0                           -- Size of SafeZone (meters)
+
+Config.TitoloEntratoSafeZone                    = 'Successo'                     -- Title | REMEMBER: Only okokNotify
+Config.MessaggioEntratoSafeZone                 = 'Sei Entrato in SafeZone'      -- You are Joined in the SafeZone
+Config.TipoNotificaEntratoSafeZone              = 'success'                      -- (success, error, info)
+
+Config.TitoloUscitoSafeZone                    = 'Successo'                     -- Title | REMEMBER: Only okokNotify
+Config.MessaggioUscitoSafeZone                 = 'Sei Uscito dalla SafeZone'    -- You have Left in the SafeZone
+Config.TipoNotificaUscitoSafeZone              = 'error'                        -- (success, error, info)
+
+Config.TitoloNoArmiSafeZone                    = 'Non puoi Farlo'                       -- Title | REMEMBER: Only okokNotify
+Config.MessaggioNoArmiSafeZone                 = 'Non puoi Usare Armi in SafeZone'      -- You can't Use the Weapon in the SafeZone
+Config.TipoNotificaNoArmiSafeZone              = 'error'                                -- (success, error, info)
+
+Config.TitoloNonFarloSafeZone                  = 'No'                             -- Title | REMEMBER: Only okokNotify
+Config.MessaggioNonFarloSafeZone               = 'Non puoi Farlo'                 -- You can't
+Config.TipoNotificaNonFarloSafeZone            = 'error'                          -- (success, error, info)
+
+Config.Zone = {
+	{ ['x'] = 297.9339, ['y'] = -584.2063, ['z'] = 43.2608},
+	{ ['x'] = -41.5654, ['y'] = -1099.2507, ['z'] =  26.3990}
+}
+
+-- End SafeZone System
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

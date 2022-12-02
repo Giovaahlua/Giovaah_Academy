@@ -24,8 +24,8 @@ RegisterCommand(Config.AliasComandoMunizioni, function()
     local xPlayer = PlayerPedId()
     local Weapon = GetSelectedPedWeapon(xPlayer)
 
-    for k, armi1 in ipairs(Config.ArmiAmmesse.Armi) do
-        if Weapon == GetHashKey(armi1) then
+    for k, Armi in ipairs(Config.ArmiAmmesse.Armi) do
+        if Weapon == GetHashKey(Armi) then
             AddAmmoToPed(xPlayer, Weapon, 255)
 
             if Config.Notifica == 'OKOK' then
@@ -33,9 +33,6 @@ RegisterCommand(Config.AliasComandoMunizioni, function()
         
             elseif Config.Notifica == "QB" then
                 TriggerEvent('QBCore:Notify', Config.MessaggioRicaricaArmi, Config.TipoNotificaRicaricaArmi, 2500)
-
-            elseif Config.Notifica == 'PNP' then
-                TriggerEvent('pnpNotify:send', '<b><span style="color: #ff0000;">Volture Academy</span></br> Hai Ricaricato l\'Arma.')
             end
         else
 
@@ -44,9 +41,6 @@ RegisterCommand(Config.AliasComandoMunizioni, function()
         
             elseif Config.Notifica == "QB" then
                 TriggerEvent('QBCore:Notify', Config.MessaggioRicaricaArmiFallito, Config.TipoNotificaRicaricaArmiFallito, 2500)
-
-            elseif Config.Notifica == 'PNP' then
-                TriggerEvent('pnpNotify:send', '<b><span style="color: #ff0000;">Volture Academy</span></br> Non puoi Ricaricare quest\'Arma! Credi che sia un Problema? Contatta l\'Amministratore del Server.')
             end
         end
     end
@@ -77,6 +71,135 @@ else
 end
 
 
+local notificaEntrata = false
+local notificaUscita = false
+local zonaVicina = 1
+
+if Config.AttivaSafeZone == 'true' then
+    if Config.AttivaBlipSafeZone == 'true' then
+        Citizen.CreateThread(function()
+            while not NetworkIsPlayerActive(PlayerId()) do
+                Citizen.Wait(0)
+            end
+            
+            for i = 1, #Config.Zone, 1 do
+                local GD_Blip = AddBlipForCoord(Config.Zone[i].x, Config.Zone[i].y, Config.Zone[i].z)
+                SetBlipAsShortRange(GD_Blip, true)
+                SetBlipColour(GD_Blip, 2)  --Change the blip color: https://gtaforums.com/topic/864881-all-blip-color-ids-pictured/
+                SetBlipSprite(GD_Blip, 398) -- Change the blip itself: https://marekkraus.sk/gtav/blips/list.html
+                BeginTextCommandSetBlipName("STRING")
+                AddTextComponentString(Config.NomeBlipSafezone) -- What it will say when you hover over the blip on your map.
+                EndTextCommandSetBlipName(GD_Blip)
+            end
+        end)
+    else
+    end
+else
+end
+
+if Config.AttivaSafeZone == 'true' then
+    Citizen.CreateThread(function()
+        while not NetworkIsPlayerActive(PlayerId()) do
+            Citizen.Wait(0)
+        end
+        
+        while true do
+            local playerPed = GetPlayerPed(-1)
+            local x, y, z = table.unpack(GetEntityCoords(playerPed, true))
+            local minDistance = 100000
+            for i = 1, #Config.Zone, 1 do
+                dist = Vdist(Config.Zone[i].x, Config.Zone[i].y, Config.Zone[i].z, x, y, z)
+                if dist < minDistance then
+                    minDistance = dist
+                    zonaVicina = i
+                end
+            end
+            Citizen.Wait(15000)
+        end
+    end)   
+else
+end
+
+if Config.AttivaSafeZone == 'true' then
+    Citizen.CreateThread(function()
+        while not NetworkIsPlayerActive(PlayerId()) do
+            Citizen.Wait(0)
+        end
+        
+        while true do
+            Citizen.Wait(0)
+            local player = GetPlayerPed(-1)
+            local x,y,z = table.unpack(GetEntityCoords(player, true))
+            local dist = Vdist(Config.Zone[zonaVicina].x, Config.Zone[zonaVicina].y, Config.Zone[zonaVicina].z, x, y, z)
+        
+            if dist <= Config.GrandezzaSafeZone then
+                if not notificaEntrata then
+                    NetworkSetFriendlyFireOption(false)
+                    ClearPlayerWantedLevel(PlayerId())
+                    SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
+
+                    if Config.Notifica == 'OKOK' then
+                        TriggerEvent('okokNotify:Alert', Config.TitoloEntratoSafeZone, Config.MessaggioEntratoSafeZone, 2500, Config.TipoNotificaEntratoSafeZone)  
+                
+                    elseif Config.Notifica == "QB" then
+                        TriggerEvent('QBCore:Notify', Config.MessaggioEntratoSafeZone, Config.TipoNotificaEntratoSafeZone, 2500)
+                    end
+
+                    notificaEntrata = true
+                    notificaUscita = false
+                end
+            else
+                if not notificaUscita then
+                    NetworkSetFriendlyFireOption(true)
+
+                    if Config.Notifica == 'OKOK' then
+                        TriggerEvent('okokNotify:Alert', Config.TitoloUscitoSafeZone, Config.MessaggioUscitoSafeZone, 2500, Config.TipoNotificaUscitoSafeZone)  
+                
+                    elseif Config.Notifica == "QB" then
+                        TriggerEvent('QBCore:Notify', Config.MessaggioUscitoSafeZone, Config.TipoNotificaUscitoSafeZone, 2500)
+                    end
+
+                    notificaUscita = true
+                    notificaEntrata = false
+                end
+            end
+            if notificaEntrata then
+            DisableControlAction(2, 37, true)
+            DisablePlayerFiring(player,true)
+            DisableControlAction(0, 106, true)
+                if IsDisabledControlJustPressed(2, 37) then
+                    SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
+
+                    if Config.Notifica == 'OKOK' then
+                        TriggerEvent('okokNotify:Alert', Config.TitoloNoArmiSafeZone, Config.MessaggioNoArmiSafeZone, 2500, Config.TipoNotificaNoArmiSafeZone)  
+                
+                    elseif Config.Notifica == "QB" then
+                        TriggerEvent('QBCore:Notify', Config.MessaggioNoArmiSafeZone, Config.TipoNotificaNoArmiSafeZone, 2500)
+                    end
+                end
+                if IsDisabledControlJustPressed(0, 106) then
+                    SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
+
+                    if Config.Notifica == 'OKOK' then
+                        TriggerEvent('okokNotify:Alert', Config.TitoloNonFarloSafeZone, Config.MessaggioNonFarloSafeZone, 2500, Config.TipoNotificaNonFarloSafeZone)  
+                
+                    elseif Config.Notifica == "QB" then
+                        TriggerEvent('QBCore:Notify', Config.MessaggioNonFarloSafeZone, Config.TipoNotificaNonFarloSafeZone, 2500)
+                    end
+                end
+            end
+
+            --[[if DoesEntityExist(player) then
+                DrawMarker(1, Config.Zone[zonaVicina].x, Config.Zone[zonaVicina].y, Config.Zone[zonaVicina].z-1.0001, 0, 0, 0, 0, 0, 0, 100.0, 100.0, 2.0, 13, 232, 255, 155, 0, 0, 2, 0, 0, 0, 0)
+            end--]]
+        end
+    end) 
+else
+end
+
+
+
+
 RegisterCommand('Giovaah_Academy', function()
     if Config.Notifica == 'OKOK' then
         TriggerEvent('okokNotify:Alert', '', 'Giovaah_Academy (1.0)', 10000, 'info')  
@@ -99,17 +222,6 @@ RegisterCommand('Giovaah_Academy', function()
         TriggerEvent('QBCore:Notify', 'EN | For any Problem contact me on Discord', info, 10000)
         Citizen.Wait(1000)
         TriggerEvent('QBCore:Notify', 'https://dsc.gg/giovaahdevelopment', info, 10000)
-
-    elseif Config.Notifica == 'PNP' then
-        TriggerEvent('pnpNotify:send', '<b><span style="color: #ff0000;">Volture Academy</span></br> Giovaah Development')
-        Citizen.Wait(1000)
-        TriggerEvent('pnpNotify:send', '<b><span style="color: #ff0000;">Volture Academy</span></br> Developed by Giovaaah#1265')
-        Citizen.Wait(1000)
-        TriggerEvent('pnpNotify:send', '<b><span style="color: #ff0000;">Volture Academy</span></br> IT | Per qualsiasi Problema contattami su Discord')
-        Citizen.Wait(1000)
-        TriggerEvent('pnpNotify:send', '<b><span style="color: #ff0000;">Volture Academy</span></br> EN | For any Problem contact me on Discord')
-        Citizen.Wait(1000)
-        TriggerEvent('pnpNotify:send', '<b><span style="color: #ff0000;">Volture Academy</span></br> https://dsc.gg/giovaahdevelopment')
     end
 end)
 
@@ -123,11 +235,6 @@ RegisterCommand('discord_giovaahdevelopment', function()
         TriggerEvent('QBCore:Notify', 'Giovaah Development', info, 10000)
         Citizen.Wait(1000)
         TriggerEvent('QBCore:Notify', 'https://dsc.gg/giovaahdevelopment', info, 10000)
-
-    elseif Config.Notifica == 'PNP' then
-        TriggerEvent('pnpNotify:send', '<b><span style="color: #ff0000;">Volture Academy</span></br> Giovaah Development')
-        Citizen.Wait(1000)
-        TriggerEvent('pnpNotify:send', '<b><span style="color: #ff0000;">Volture Academy</span></br> https://dsc.gg/giovaahdevelopment')
     end
 end)
 
