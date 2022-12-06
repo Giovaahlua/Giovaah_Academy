@@ -3,8 +3,8 @@
 --      Creatore: GiovaahLua (Giovaaah#1265)             -- 
 --      Per qualsiasi Problema scrivimi su Discord.      --                              
 --                                                       -- 
---      Nome dello Script: Giovaah_Academy               --  
---      Versione dello Script: 1.6                       -- 
+--      Nome dello Script: Giovaah_Academy               --                           
+--                                                       -- 
 -----------------------------------------------------------
 --           https://dsc.gg/giovaahdevelopment           -- 
 -----------------------------------------------------------
@@ -13,7 +13,11 @@ Config = {} -- DON'T TOUCH THIS!!
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Config.Notifica                                 = 'QB'                          -- Notify System | 'OKOK' (okokNotify), 'QB' (QB-Core Default Notification System)
+Config.FrameWork                                = 'CHOISE THAT'                          -- Select the FrameWork (ESX or QB)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Config.Notifica                                 = 'CHOISE THAT'                          -- Notify System | 'OKOK' (okokNotify), 'QB' (QB-Core Default Notification System), ESX (ESX Default Notification System)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Start Moto System

@@ -1,16 +1,52 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+if Config.FrameWork == "ESX" then
+    ESX = exports['es_extended']:getSharedObject()
+elseif Config.FrameWork == "QBCORE" then
+    local QBCore = exports['qb-core']:GetCoreObject()
+end
 
-RegisterCommand(Config.AliasComandoSpawnMoto, function(source)
-    TriggerClientEvent('QBCore:Command:SpawnVehicle', source, 'bf400')
+-- COMANDO SPAWN MOTO
 
-    if Config.Notifica == 'OKOK' then
-        TriggerClientEvent('okokNotify:Alert', source, Config.TitoloSpawnMoto, Config.MessaggioSpawnMoto, 2500, Config.TipoNotificaSpawnMoto)  
+RegisterCommand(Config.AliasComandoSpawnMoto, function(source) --FRAMEWORK FIXED
+	if Config.FrameWork == "ESX" then
+		TriggerClientEvent('esx:spawnVehicle', source, 'BF400')
 
-    elseif Config.Notifica == "QB" then
-        TriggerClientEvent('QBCore:Notify', source, Config.MessaggioSpawnMoto, Config.TipoNotificaSpawnMoto, 2500)
-    end
+		if Config.Notifica == 'OKOK' then
+			TriggerClientEvent('okokNotify:Alert', source, Config.TitoloSpawnMoto, Config.MessaggioSpawnMoto, 2500, Config.TipoNotificaSpawnMoto)  
 
+		elseif Config.Notifica == "ESX" then
+			TriggerClientEvent('esx:showNotification', source, Config.MessaggioSpawnMoto, Config.TipoNotificaSpawnMoto, 2500)
+
+		elseif Config.Notifica == "QB" then
+			print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+		end
+	elseif Config.FrameWork == "QBCORE" then
+		TriggerClientEvent('QBCore:Command:SpawnVehicle', source, 'bf400')
+
+		if Config.Notifica == 'OKOK' then
+			TriggerClientEvent('okokNotify:Alert', source, Config.TitoloSpawnMoto, Config.MessaggioSpawnMoto, 2500, Config.TipoNotificaSpawnMoto)  
+	
+		elseif Config.Notifica == "QB" then
+			TriggerClientEvent('QBCore:Notify', source, Config.MessaggioSpawnMoto, Config.TipoNotificaSpawnMoto, 2500)
+
+		elseif Config.Notifica == "ESX" then
+			print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+		end
+	end
 end)
+
+
+-- FINE SCRIPT
+-- FINE SCRIPT
+-- FINE SCRIPT
+-- FINE SCRIPT
+-- FINE SCRIPT
+
+-- NON TOCCARE
+-- NON TOCCARE
+-- NON TOCCARE
+-- NON TOCCARE
+-- NON TOCCARE
+
 
 local verFile = LoadResourceFile(GetCurrentResourceName(), "version.json")
 local curVersion = json.decode(verFile).version

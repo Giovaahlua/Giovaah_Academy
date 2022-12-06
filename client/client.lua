@@ -1,14 +1,33 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+if Config.FrameWork == "ESX" then
+    ESX = exports['es_extended']:getSharedObject()
+elseif Config.FrameWork == "QBCORE" then
+    local QBCore = exports['qb-core']:GetCoreObject()
+end
+
+-- COMANDO DESPAWN MOTO
 
 RegisterKeyMapping(Config.AliasComandoDespawnMoto, "Despawna una Moto", "keyboard", Config.TastoDespawnMoto)
 
 RegisterCommand(Config.AliasComandoDespawnMoto, function()
     local ped = PlayerPedId()
-        local vehicleData = {}
-        local vehicle = GetVehiclePedIsIn(ped, false)
-        vehicleData.model = GetEntityModel(vehicle)
-        vehicleData.plate = GetVehicleNumberPlateText(vehicle)
-        if vehicleData.model == Config.ModelloHashVeicolo then
+    local vehicleData = {}
+    local vehicle = GetVehiclePedIsIn(ped, false)
+    vehicleData.model = GetEntityModel(vehicle)
+    vehicleData.plate = GetVehicleNumberPlateText(vehicle)
+    if vehicleData.model == Config.ModelloHashVeicolo then
+        if Config.FrameWork == "ESX" then
+            TriggerEvent('esx:deleteVehicle', '4')
+
+            if Config.Notifica == 'OKOK' then
+                TriggerEvent('okokNotify:Alert', Config.TitoloDespawnMoto, Config.MessaggioDespawnMoto, 2500, Config.TipoNotificaDespawnMoto)  
+
+            elseif Config.Notifica == 'ESX' then
+                ESX.ShowNotification(Config.MessaggioDespawnMoto, 2500, Config.TipoNotificaDespawnMoto)
+        
+            elseif Config.Notifica == "QB" then
+                print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+            end
+        elseif Config.FrameWork == "QBCORE" then
             TriggerEvent('QBCore:Command:DeleteVehicle', GetPlayerServerId(PlayerId()))
 
             if Config.Notifica == 'OKOK' then
@@ -16,9 +35,15 @@ RegisterCommand(Config.AliasComandoDespawnMoto, function()
         
             elseif Config.Notifica == "QB" then
                 TriggerEvent('QBCore:Notify', Config.MessaggioDespawnMoto, Config.TipoNotificaDespawnMoto, 2500)
+        
+            elseif Config.Notifica == "ESX" then
+                print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
             end
         end
+    end
 end)
+
+-- COMANDO MUNIZIONI
 
 RegisterCommand(Config.AliasComandoMunizioni, function()
     local xPlayer = PlayerPedId()
@@ -28,23 +53,55 @@ RegisterCommand(Config.AliasComandoMunizioni, function()
         if Weapon == GetHashKey(Armi) then
             AddAmmoToPed(xPlayer, Weapon, 255)
 
-            if Config.Notifica == 'OKOK' then
-                TriggerEvent('okokNotify:Alert', Config.TitoloRicaricaArmi, Config.MessaggioRicaricaArmi, 2500, Config.TipoNotificaRicaricaArmi)  
-        
-            elseif Config.Notifica == "QB" then
-                TriggerEvent('QBCore:Notify', Config.MessaggioRicaricaArmi, Config.TipoNotificaRicaricaArmi, 2500)
+            
+            if Config.FrameWork == "ESX" then
+                if Config.Notifica == 'OKOK' then
+                    TriggerEvent('okokNotify:Alert', Config.TitoloRicaricaArmi, Config.MessaggioRicaricaArmi, 2500, Config.TipoNotificaRicaricaArmi)  
+            
+                elseif Config.Notifica == 'ESX' then
+                    ESX.ShowNotification(Config.MessaggioRicaricaArmi, 2500, Config.TipoNotificaRicaricaArmi)
+
+                elseif Config.Notifica == "QB" then
+                    print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                end
+            elseif Config.FrameWork == "QBCORE" then
+                if Config.Notifica == 'OKOK' then
+                    TriggerEvent('okokNotify:Alert', Config.TitoloRicaricaArmi, Config.MessaggioRicaricaArmi, 2500, Config.TipoNotificaRicaricaArmi)  
+            
+                elseif Config.Notifica == 'QB' then
+                    TriggerEvent('QBCore:Notify', Config.MessaggioRicaricaArmi, Config.TipoNotificaRicaricaArmi, 2500)
+
+                elseif Config.Notifica == "ESX" then
+                    print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                end
             end
         else
+            if Config.FrameWork == "ESX" then
+                if Config.Notifica == 'OKOK' then
+                    TriggerEvent('okokNotify:Alert', Config.TitoloRicaricaArmiFallito, Config.MessaggioRicaricaArmiFallito, 2500, Config.TipoNotificaRicaricaArmiFallito)  
+            
+                elseif Config.Notifica == 'ESX' then
+                    ESX.ShowNotification(Config.MessaggioRicaricaArmiFallito, 2500, Config.TipoNotificaRicaricaArmiFallito)
 
-            if Config.Notifica == 'OKOK' then
-                TriggerEvent('okokNotify:Alert', Config.TitoloRicaricaArmiFallito, Config.MessaggioRicaricaArmiFallito, 2500, Config.TipoNotificaRicaricaArmiFallito)  
-        
-            elseif Config.Notifica == "QB" then
-                TriggerEvent('QBCore:Notify', Config.MessaggioRicaricaArmiFallito, Config.TipoNotificaRicaricaArmiFallito, 2500)
+                elseif Config.Notifica == "QB" then
+                    print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                end
+            elseif Config.FrameWork == "QBCORE" then
+                if Config.Notifica == 'OKOK' then
+                    TriggerEvent('okokNotify:Alert', Config.TitoloRicaricaArmiFallito, Config.MessaggioRicaricaArmiFallito, 2500, Config.TipoNotificaRicaricaArmiFallito)  
+            
+                elseif Config.Notifica == 'QB' then
+                    TriggerEvent('QBCore:Notify', Config.MessaggioRicaricaArmiFallito, Config.TipoNotificaRicaricaArmiFallito, 2500)
+
+                elseif Config.Notifica == "ESX" then
+                    print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                end
             end
         end
     end
 end)
+
+-- SISTEMA NONPCS
 
 if Config.DisattivaNPC == 'true' then
     Citizen.CreateThread(function()
@@ -70,6 +127,7 @@ if Config.DisattivaNPC == 'true' then
 else
 end
 
+-- SISTEMA SAFEZONES
 
 local notificaEntrata = false
 local notificaUscita = false
@@ -132,72 +190,156 @@ if Config.AttivaSafeZone == 'true' then
             local x,y,z = table.unpack(GetEntityCoords(player, true))
             local dist = Vdist(Config.Zone[zonaVicina].x, Config.Zone[zonaVicina].y, Config.Zone[zonaVicina].z, x, y, z)
         
-            if dist <= Config.GrandezzaSafeZone then
-                if not notificaEntrata then
-                    NetworkSetFriendlyFireOption(false)
-                    ClearPlayerWantedLevel(PlayerId())
-                    SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
+            if Config.FrameWork == "ESX" then
+                if dist <= Config.GrandezzaSafeZone then
+                    if not notificaEntrata then
+                        NetworkSetFriendlyFireOption(false)
+                        ClearPlayerWantedLevel(PlayerId())
+                        SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
 
-                    if Config.Notifica == 'OKOK' then
-                        TriggerEvent('okokNotify:Alert', Config.TitoloEntratoSafeZone, Config.MessaggioEntratoSafeZone, 2500, Config.TipoNotificaEntratoSafeZone)  
-                
-                    elseif Config.Notifica == "QB" then
-                        TriggerEvent('QBCore:Notify', Config.MessaggioEntratoSafeZone, Config.TipoNotificaEntratoSafeZone, 2500)
+                        if Config.Notifica == 'OKOK' then
+                            TriggerEvent('okokNotify:Alert', Config.TitoloEntratoSafeZone, Config.MessaggioEntratoSafeZone, 2500, Config.TipoNotificaEntratoSafeZone)  
+                    
+                        elseif Config.Notifica == "ESX" then
+                            ESX.ShowNotification(Config.MessaggioEntratoSafeZone, 2500, Config.TipoNotificaEntratoSafeZone)
+
+                        elseif Config.Notifica == "QB" then
+                            print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                        end
+
+                        notificaEntrata = true
+                        notificaUscita = false
                     end
+                else
+                    if not notificaUscita then
+                        NetworkSetFriendlyFireOption(true)
 
-                    notificaEntrata = true
-                    notificaUscita = false
+                        if Config.Notifica == 'OKOK' then
+                            TriggerEvent('okokNotify:Alert', Config.TitoloUscitoSafeZone, Config.MessaggioUscitoSafeZone, 2500, Config.TipoNotificaUscitoSafeZone)  
+                    
+                        elseif Config.Notifica == "ESX" then
+                            ESX.ShowNotification(Config.MessaggioUscitoSafeZone, 2500, Config.TipoNotificaUscitoSafeZone)
+
+                        elseif Config.Notifica == "QB" then
+                            print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                        end
+
+                        notificaUscita = true
+                        notificaEntrata = false
+                    end
                 end
-            else
-                if not notificaUscita then
-                    NetworkSetFriendlyFireOption(true)
+                if notificaEntrata then
+                DisableControlAction(2, 37, true)
+                DisablePlayerFiring(player,true)
+                DisableControlAction(0, 106, true)
+                    if IsDisabledControlJustPressed(2, 37) then
+                        SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
 
-                    if Config.Notifica == 'OKOK' then
-                        TriggerEvent('okokNotify:Alert', Config.TitoloUscitoSafeZone, Config.MessaggioUscitoSafeZone, 2500, Config.TipoNotificaUscitoSafeZone)  
-                
-                    elseif Config.Notifica == "QB" then
-                        TriggerEvent('QBCore:Notify', Config.MessaggioUscitoSafeZone, Config.TipoNotificaUscitoSafeZone, 2500)
+                        if Config.Notifica == 'OKOK' then
+                            TriggerEvent('okokNotify:Alert', Config.TitoloNoArmiSafeZone, Config.MessaggioNoArmiSafeZone, 2500, Config.TipoNotificaNoArmiSafeZone)  
+                    
+                        elseif Config.Notifica == "ESX" then
+                            ESX.ShowNotification(Config.MessaggioNoArmiSafeZone, 2500, Config.TipoNotificaNoArmiSafeZone)
+
+                        elseif Config.Notifica == "QB" then
+                            print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                        end
                     end
+                    if IsDisabledControlJustPressed(0, 106) then
+                        SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
 
-                    notificaUscita = true
-                    notificaEntrata = false
+                        if Config.Notifica == 'OKOK' then
+                            TriggerEvent('okokNotify:Alert', Config.TitoloNonFarloSafeZone, Config.MessaggioNonFarloSafeZone, 2500, Config.TipoNotificaNonFarloSafeZone)  
+                    
+                        elseif Config.Notifica == "ESX" then
+                            ESX.ShowNotification(Config.MessaggioNonFarloSafeZone, 2500, Config.TipoNotificaNonFarloSafeZone)
+
+                        elseif Config.Notifica == "QB" then
+                            print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                        end
+                    end
+                end
+            elseif Config.FrameWork == "QBCORE" then
+                if dist <= Config.GrandezzaSafeZone then
+                    if not notificaEntrata then
+                        NetworkSetFriendlyFireOption(false)
+                        ClearPlayerWantedLevel(PlayerId())
+                        SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
+
+                        if Config.Notifica == 'OKOK' then
+                            TriggerEvent('okokNotify:Alert', Config.TitoloEntratoSafeZone, Config.MessaggioEntratoSafeZone, 2500, Config.TipoNotificaEntratoSafeZone)  
+                    
+                        elseif Config.Notifica == "QB" then
+                            TriggerEvent('QBCore:Notify', Config.MessaggioEntratoSafeZone, Config.TipoNotificaEntratoSafeZone, 2500)
+
+                        elseif Config.Notifica == "ESX" then
+                            print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                        end
+
+                        notificaEntrata = true
+                        notificaUscita = false
+                    end
+                else
+                    if not notificaUscita then
+                        NetworkSetFriendlyFireOption(true)
+
+                        if Config.Notifica == 'OKOK' then
+                            TriggerEvent('okokNotify:Alert', Config.TitoloUscitoSafeZone, Config.MessaggioUscitoSafeZone, 2500, Config.TipoNotificaUscitoSafeZone)  
+                    
+                        elseif Config.Notifica == "QB" then
+                            TriggerEvent('QBCore:Notify', Config.MessaggioUscitoSafeZone, Config.TipoNotificaUscitoSafeZone, 2500)
+
+                        elseif Config.Notifica == "ESX" then
+                            print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                        end
+
+                        notificaUscita = true
+                        notificaEntrata = false
+                    end
+                end
+                if notificaEntrata then
+                DisableControlAction(2, 37, true)
+                DisablePlayerFiring(player,true)
+                DisableControlAction(0, 106, true)
+                    if IsDisabledControlJustPressed(2, 37) then
+                        SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
+
+                        if Config.Notifica == 'OKOK' then
+                            TriggerEvent('okokNotify:Alert', Config.TitoloNoArmiSafeZone, Config.MessaggioNoArmiSafeZone, 2500, Config.TipoNotificaNoArmiSafeZone)  
+                    
+                        elseif Config.Notifica == "QB" then
+                            TriggerEvent('QBCore:Notify', Config.MessaggioNoArmiSafeZone, Config.TipoNotificaNoArmiSafeZone, 2500)
+
+                        elseif Config.Notifica == "ESX" then
+                            print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                        end
+                    end
+                    if IsDisabledControlJustPressed(0, 106) then
+                        SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
+
+                        if Config.Notifica == 'OKOK' then
+                            TriggerEvent('okokNotify:Alert', Config.TitoloNonFarloSafeZone, Config.MessaggioNonFarloSafeZone, 2500, Config.TipoNotificaNonFarloSafeZone)  
+                    
+                        elseif Config.Notifica == "QB" then
+                            TriggerEvent('QBCore:Notify', Config.MessaggioNonFarloSafeZone, Config.TipoNotificaNonFarloSafeZone, 2500)
+
+                        elseif Config.Notifica == "ESX" then
+                            print("Non puoi Utilizzare questo tipo di Notifica con questo FrameWork!")
+                        end
+                    end
                 end
             end
-            if notificaEntrata then
-            DisableControlAction(2, 37, true)
-            DisablePlayerFiring(player,true)
-            DisableControlAction(0, 106, true)
-                if IsDisabledControlJustPressed(2, 37) then
-                    SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
-
-                    if Config.Notifica == 'OKOK' then
-                        TriggerEvent('okokNotify:Alert', Config.TitoloNoArmiSafeZone, Config.MessaggioNoArmiSafeZone, 2500, Config.TipoNotificaNoArmiSafeZone)  
-                
-                    elseif Config.Notifica == "QB" then
-                        TriggerEvent('QBCore:Notify', Config.MessaggioNoArmiSafeZone, Config.TipoNotificaNoArmiSafeZone, 2500)
-                    end
-                end
-                if IsDisabledControlJustPressed(0, 106) then
-                    SetCurrentPedWeapon(player,GetHashKey("WEAPON_UNARMED"),true)
-
-                    if Config.Notifica == 'OKOK' then
-                        TriggerEvent('okokNotify:Alert', Config.TitoloNonFarloSafeZone, Config.MessaggioNonFarloSafeZone, 2500, Config.TipoNotificaNonFarloSafeZone)  
-                
-                    elseif Config.Notifica == "QB" then
-                        TriggerEvent('QBCore:Notify', Config.MessaggioNonFarloSafeZone, Config.TipoNotificaNonFarloSafeZone, 2500)
-                    end
-                end
-            end
-
-            --[[if DoesEntityExist(player) then
-                DrawMarker(1, Config.Zone[zonaVicina].x, Config.Zone[zonaVicina].y, Config.Zone[zonaVicina].z-1.0001, 0, 0, 0, 0, 0, 0, 100.0, 100.0, 2.0, 13, 232, 255, 155, 0, 0, 2, 0, 0, 0, 0)
-            end--]]
         end
     end) 
 else
 end
 
 
+-- FINE SCRIPT
+-- FINE SCRIPT
+-- FINE SCRIPT
+-- FINE SCRIPT
+-- FINE SCRIPT
 
 
 RegisterCommand('Giovaah_Academy', function()
